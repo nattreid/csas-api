@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    function csasValidator() {
+        if (window.jQuery === undefined) {
+            console.error('Plugin "jQuery" required by "Csas API" is missing!');
+            return;
+        }
+
+        var params = window.location.hash.replace('#', '')
+            .split('&')
+            .map(el => el.split('='))
+            .reduce( (pre, cur) => {
+                pre[cur[0]] = cur[1]; return pre;
+                },
+                {}
+        );
+
+        var link = {link process, 'ACCESS_TOKEN', 'EXPIRES_IN', $backlink};
+
+        link = link.replace('ACCESS_TOKEN', params['access_token']);
+        link = link.replace('EXPIRES_IN', params['expires_in']);
+        window.location.replace(link);
+    }
+    {onLoad csasValidator}
+</script>

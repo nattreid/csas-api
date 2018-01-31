@@ -1,0 +1,7 @@
+web:
+    hooks:
+        csas:
+            title: "Česká spořitelna"
+            apiKey: "API key"
+            clientId: "Your clientId"
+            clientSecret: "Your clientSecret"
