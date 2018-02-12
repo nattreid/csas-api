@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NAttreid\CsasApi\DI;
 
 use NAttreid\CsasApi\CsasClient;
+use NAttreid\CsasApi\CsasCorporateClient;
 use NAttreid\CsasApi\ICsasClientFactory;
 use NAttreid\CsasApi\ICsasCorporateClientFactory;
 use Nette\DI\CompilerExtension;
