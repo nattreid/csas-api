@@ -11,17 +11,17 @@ use Nette\Http\Session;
 use stdClass;
 
 /**
- * Class CsasClient
+ * Class CsasCorporateClient
  *
  * @author Attreid <attreid@gmail.com>
  */
-class CsasClient extends AbstractClient
+class CsasCorporateClient extends AbstractClient
 {
 	public function __construct(bool $debug, CsasConfig $config, Session $session, Request $request, Response $response)
 	{
 		parent::__construct($debug, $config, $session, $request, $response);
 		if ($debug) {
-			$this->uri = "https://api.csas.cz/sandbox/webapi/api/v3/netbanking/my/";
+			$this->uri = "https://api.csas.cz/sandbox/webapi/api/v1/corporate/our/";
 			$this->authorizeUrl = "	https://api.csas.cz/sandbox/widp/oauth2/auth";
 			$this->tokenUrl = "http://api.csas.cz/sandbox/widp/oauth2/token";
 		} else {
@@ -32,18 +32,18 @@ class CsasClient extends AbstractClient
 	 * @return null|stdClass
 	 * @throws CsasClientException
 	 */
+	public function companies(): ?stdClass
+	{
+		return $this->get('companies');
+	}
+
 	public function accounts(): ?stdClass
 	{
 		return $this->get('accounts');
 	}
-
-	public function diggest(): ?stdClass
-	{
-		return $this->get('accounts/diggest');
-	}
 }
 
-interface ICsasClientFactory
+interface ICsasCorporateClientFactory
 {
-	public function create(): CsasClient;
+	public function create(): CsasCorporateClient;
 }
