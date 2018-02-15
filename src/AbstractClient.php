@@ -19,6 +19,7 @@ use Nette\Utils\JsonException;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 use stdClass;
+use Tracy\Debugger;
 
 /**
  * Class AbstractClient
@@ -103,17 +104,27 @@ abstract class AbstractClient extends Control
 	/**
 	 * @return string
 	 * @throws InvalidLinkException
+	 * @throws JsonException
 	 */
 	private function getToken(): string
 	{
 		if ($this->section->token === null) {
 			$backlink = $this->presenter->storeRequest();
-			$this->response->redirect($this->authorizeUrl . '?' . http_build_query([
+			$link = $this->authorizeUrl . '?' . http_build_query([
 					'client_id' => $this->config->clientId,
 					'redirect_uri' => $this->link('//token', [$backlink]),
 					'scope' => 'profile',
 					'response_type' => 'token'
-				]));
+				]);
+			if ($this->request->isAjax()) {
+				$obj = new stdClass();
+				$obj->forceRedirect = $link;
+				$this->response->setHeader('Content-Type', 'application/json; charset=utf-8');
+				echo Json::encode($obj);
+			} else {
+				$this->response->redirect($link);
+			}
+
 			exit;
 		}
 		return $this->section->token;
@@ -124,12 +135,13 @@ abstract class AbstractClient extends Control
 	 * @param string $url
 	 * @param array $args
 	 * @return stdClass|null
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
 	private function request(string $method, string $url, array $args = []): ?stdClass
 	{
 		if (empty($this->config->apiKey)) {
-			throw new CsasClientException('ApiKey must be set');
+			throw new CredentialsNotSetException('ApiKey must be set');
 		}
 
 		try {
@@ -177,6 +189,7 @@ abstract class AbstractClient extends Control
 	/**
 	 * @param string $url
 	 * @return stdClass|null
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
 	protected function get(string $url): ?stdClass
@@ -188,6 +201,7 @@ abstract class AbstractClient extends Control
 	 * @param string $url
 	 * @param string[] $args
 	 * @return stdClass|null
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
 	protected function post(string $url, array $args = []): ?stdClass
@@ -198,6 +212,7 @@ abstract class AbstractClient extends Control
 	/**
 	 * @param string $url
 	 * @return bool
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
 	protected function delete(string $url): bool
@@ -209,6 +224,7 @@ abstract class AbstractClient extends Control
 	 * @param string $url
 	 * @param string[] $args
 	 * @return stdClass|null
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
 	protected function patch(string $url, array $args = []): ?stdClass
@@ -220,6 +236,7 @@ abstract class AbstractClient extends Control
 	 * @param string $url
 	 * @param string[] $args
 	 * @return stdClass|null
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
 	protected function put(string $url, array $args = []): ?stdClass

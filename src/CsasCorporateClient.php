@@ -31,12 +31,18 @@ class CsasCorporateClient extends AbstractClient
 	/**
 	 * @return null|stdClass
 	 * @throws CsasClientException
+	 * @throws CredentialsNotSetException
 	 */
 	public function companies(): ?stdClass
 	{
 		return $this->get('companies');
 	}
 
+	/**
+	 * @return null|stdClass
+	 * @throws CredentialsNotSetException
+	 * @throws CsasClientException
+	 */
 	public function accounts(): ?stdClass
 	{
 		return $this->get('accounts');

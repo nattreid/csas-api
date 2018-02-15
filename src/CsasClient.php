@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NAttreid\CsasApi;
 
+use DateTimeInterface;
 use NAttreid\CsasApi\DI\CsasConfig;
 use Nette\Http\Request;
 use Nette\Http\Response;
@@ -21,25 +22,47 @@ class CsasClient extends AbstractClient
 	{
 		parent::__construct($debug, $config, $session, $request, $response);
 		if ($debug) {
-			$this->uri = "https://api.csas.cz/sandbox/webapi/api/v3/netbanking/my/";
-			$this->authorizeUrl = "	https://api.csas.cz/sandbox/widp/oauth2/auth";
+			$this->uri = "https://api.csas.cz/sandbox/webapi/api/v3/netbanking/";
+			$this->authorizeUrl = "https://api.csas.cz/sandbox/widp/oauth2/auth";
 			$this->tokenUrl = "http://api.csas.cz/sandbox/widp/oauth2/token";
 		} else {
 		}
 	}
 
 	/**
-	 * @return null|stdClass
+	 * @return array
+	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	public function accounts(): ?stdClass
+	public function accounts(): array
 	{
-		return $this->get('accounts');
+		return $this->get('my/accounts')->accounts ?? [];
 	}
 
+	/**
+	 * @return null|stdClass
+	 * @throws CredentialsNotSetException
+	 * @throws CsasClientException
+	 */
 	public function diggest(): ?stdClass
 	{
-		return $this->get('accounts/diggest');
+		return $this->get('my/accounts/diggest');
+	}
+
+	/**
+	 * @param string $iban
+	 * @param DateTimeInterface $from
+	 * @param DateTimeInterface $to
+	 * @return array
+	 * @throws CredentialsNotSetException
+	 * @throws CsasClientException
+	 */
+	public function transaction(string $iban, DateTimeInterface $from, DateTimeInterface $to): array
+	{
+		$format = 'c';
+		$sfrom = urlencode($from->format($format));
+		$sTo = urlencode($to->format($format));
+		return $this->get("cz/my/accounts/{$iban}/transactions?dateStart={$sfrom}&dateEnd={$sTo}")->transactions ?? [];
 	}
 }
 
