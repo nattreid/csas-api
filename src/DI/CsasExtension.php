@@ -29,7 +29,7 @@ if (trait_exists('NAttreid\Cms\DI\ExtensionTranslatorTrait')) {
 					'webManager'
 				]);
 
-				return new Statement('?->csas \?: ?', ['@' . Configurator::class, '@' . CsasHook::class]);
+				return new Statement('?->csas \?: ?', ['@' . Configurator::class, '@' . CsasConfig::class]);
 			} else {
 				return parent::prepareHook($csasConfig);
 			}
