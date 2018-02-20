@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace NAttreid\CsasApi;
 
+use DateTimeInterface;
 use NAttreid\CsasApi\DI\CsasConfig;
 use Nette\Http\Request;
 use Nette\Http\Response;
@@ -22,30 +23,46 @@ class CsasCorporateClient extends AbstractClient
 		parent::__construct($debug, $config, $session, $request, $response);
 		if ($debug) {
 			$this->uri = "https://api.csas.cz/sandbox/webapi/api/v1/corporate/our/";
-			$this->authorizeUrl = "	https://api.csas.cz/sandbox/widp/oauth2/auth";
+			$this->authorizeUrl = "https://api.csas.cz/sandbox/widp/oauth2/auth";
 			$this->tokenUrl = "http://api.csas.cz/sandbox/widp/oauth2/token";
 		} else {
 		}
 	}
 
 	/**
-	 * @return null|stdClass
+	 * @return array
 	 * @throws CsasClientException
 	 * @throws CredentialsNotSetException
 	 */
-	public function companies(): ?stdClass
+	public function companies(): array
 	{
 		return $this->get('companies');
 	}
 
 	/**
-	 * @return null|stdClass
+	 * @return array
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	public function accounts(): ?stdClass
+	public function accounts(): array
 	{
-		return $this->get('accounts');
+		return $this->get('accounts')->accounts ?? [];
+	}
+
+	/**
+	 * @param string $id
+	 * @param DateTimeInterface $from
+	 * @param DateTimeInterface $to
+	 * @return array
+	 * @throws CredentialsNotSetException
+	 * @throws CsasClientException
+	 */
+	public function transactions(string $id, DateTimeInterface $from, DateTimeInterface $to): array
+	{
+		$format = 'c';
+		$sfrom = urlencode($from->format($format));
+		$sTo = urlencode($to->format($format));
+		return $this->get("accounts/{$id}/transactions?dateStart={$sfrom}&dateEnd={$sTo}")->transactions ?? [];
 	}
 }
 

@@ -57,7 +57,7 @@ class CsasClient extends AbstractClient
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	public function transaction(string $iban, DateTimeInterface $from, DateTimeInterface $to): array
+	public function transactions(string $iban, DateTimeInterface $from, DateTimeInterface $to): array
 	{
 		$format = 'c';
 		$sfrom = urlencode($from->format($format));

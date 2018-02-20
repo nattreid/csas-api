@@ -67,10 +67,10 @@ abstract class AbstractClient extends Control
 
 	/**
 	 * @param ResponseInterface $response
-	 * @return stdClass|null
+	 * @return stdClass|array|null
 	 * @throws JsonException
 	 */
-	private function getResponse(ResponseInterface $response): ?stdClass
+	private function getResponse(ResponseInterface $response)
 	{
 		$json = $response->getBody()->getContents();
 		if (!empty($json)) {
@@ -134,11 +134,11 @@ abstract class AbstractClient extends Control
 	 * @param string $method
 	 * @param string $url
 	 * @param array $args
-	 * @return stdClass|null
+	 * @return stdClass|array|null
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	private function request(string $method, string $url, array $args = []): ?stdClass
+	private function request(string $method, string $url, array $args = [])
 	{
 		if (empty($this->config->apiKey)) {
 			throw new CredentialsNotSetException('ApiKey must be set');
@@ -188,11 +188,11 @@ abstract class AbstractClient extends Control
 
 	/**
 	 * @param string $url
-	 * @return stdClass|null
+	 * @return stdClass|array|null
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	protected function get(string $url): ?stdClass
+	protected function get(string $url)
 	{
 		return $this->request('GET', $url);
 	}
@@ -200,11 +200,11 @@ abstract class AbstractClient extends Control
 	/**
 	 * @param string $url
 	 * @param string[] $args
-	 * @return stdClass|null
+	 * @return stdClass|array|null
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	protected function post(string $url, array $args = []): ?stdClass
+	protected function post(string $url, array $args = [])
 	{
 		return $this->request('POST', $url, $args);
 	}
@@ -223,11 +223,11 @@ abstract class AbstractClient extends Control
 	/**
 	 * @param string $url
 	 * @param string[] $args
-	 * @return stdClass|null
+	 * @return stdClass|array|null
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	protected function patch(string $url, array $args = []): ?stdClass
+	protected function patch(string $url, array $args = [])
 	{
 		return $this->request('PATCH', $url, $args);
 	}
@@ -235,11 +235,11 @@ abstract class AbstractClient extends Control
 	/**
 	 * @param string $url
 	 * @param string[] $args
-	 * @return stdClass|null
+	 * @return stdClass|array|null
 	 * @throws CredentialsNotSetException
 	 * @throws CsasClientException
 	 */
-	protected function put(string $url, array $args = []): ?stdClass
+	protected function put(string $url, array $args = [])
 	{
 		return $this->request('PUT', $url, $args);
 	}
