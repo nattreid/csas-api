@@ -52,9 +52,6 @@ abstract class AbstractClient extends Control
 	/** @var string */
 	protected $authorizeUrl;
 
-	/** @var string */
-	protected $tokenUrl;
-
 	public function __construct(bool $debug, CsasConfig $config, Session $session, Request $request, Response $response)
 	{
 		parent::__construct();

@@ -24,7 +24,6 @@ class CsasCorporateClient extends AbstractClient
 		if ($debug) {
 			$this->uri = "https://api.csas.cz/sandbox/webapi/api/v1/corporate/our/";
 			$this->authorizeUrl = "https://api.csas.cz/sandbox/widp/oauth2/auth";
-			$this->tokenUrl = "http://api.csas.cz/sandbox/widp/oauth2/token";
 		} else {
 		}
 	}
