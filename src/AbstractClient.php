@@ -60,7 +60,7 @@ abstract class AbstractClient extends Control
 		parent::__construct();
 		$this->debug = $debug;
 		$this->config = $config;
-		$this->section = $session->getSection('nattreid/csac-api/oauth2-' . (new ReflectionClass($this))->getShortName());
+		$this->section = $session->getSection('nattreid/csas-api/oauth2-' . (new ReflectionClass($this))->getShortName());
 		$this->request = $request;
 		$this->response = $response;
 	}
