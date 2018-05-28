@@ -16,7 +16,7 @@ if (trait_exists('NAttreid\Cms\DI\ExtensionTranslatorTrait')) {
 	{
 		use ExtensionTranslatorTrait;
 
-		protected function prepareHook(ServiceDefinition $csasConfig)
+		protected function prepareConfig(ServiceDefinition $csasConfig)
 		{
 			$builder = $this->getContainerBuilder();
 			$hook = $builder->getByType(HookService::class);
@@ -31,7 +31,7 @@ if (trait_exists('NAttreid\Cms\DI\ExtensionTranslatorTrait')) {
 
 				return new Statement('?->csas \?: ?', ['@' . Configurator::class, '@' . CsasConfig::class]);
 			} else {
-				return parent::prepareHook($csasConfig);
+				return parent::prepareConfig($csasConfig);
 			}
 		}
 	}

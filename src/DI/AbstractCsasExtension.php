@@ -34,7 +34,7 @@ class AbstractCsasExtension extends CompilerExtension
 			->setType(CsasConfig::class)
 			->addSetup(new Statement('$service->apiKey = ?', [$config['apiKey']]));
 
-		$csasConfig = $this->prepareHook($csasConfig);
+		$csasConfig = $this->prepareConfig($csasConfig);
 
 		$builder->addDefinition($this->prefix('factoryClient'))
 			->setImplement(ICsasClientFactory::class)
@@ -47,7 +47,7 @@ class AbstractCsasExtension extends CompilerExtension
 			->setArguments([$config['debug'], $csasConfig]);
 	}
 
-	protected function prepareHook(ServiceDefinition $csasConfig)
+	protected function prepareConfig(ServiceDefinition $csasConfig)
 	{
 		return $csasConfig;
 	}
